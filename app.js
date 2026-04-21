@@ -1,37 +1,43 @@
-let current="all";
-let searchTerm="";
+let currentFilter="all";
+
+const grid=document.getElementById("products");
+const search=document.getElementById("searchInput");
 
 /* RENDER */
 function render(){
-  const container=document.getElementById("products");
+  const term=search.value.toLowerCase();
 
-  const list=products.filter(p =>
-    (current==="all" || p.category===current) &&
-    p.title.toLowerCase().includes(searchTerm)
+  const filtered=products.filter(p =>
+    (currentFilter==="all"||p.category===currentFilter) &&
+    p.title.toLowerCase().includes(term)
   );
 
-  container.innerHTML=list.map(p=>`
+  grid.innerHTML=filtered.map(p=>`
     <div class="card">
       <img src="${p.img}">
-      <h3>${p.title}</h3>
-      <p>${p.price}</p>
-      <button onclick="openPopup(${p.id})">Voir</button>
-      <a href="${p.link}" target="_blank" class="buy-btn">Acheter</a>
+      <div class="card-body">
+        <h3>${p.title}</h3>
+        <p>${p.desc}</p>
+        <div class="price">${p.price}</div>
+        <button onclick="openPopup(${p.id})">Voir</button>
+        <a href="${p.link}" target="_blank" class="buy-btn">Acheter</a>
+      </div>
     </div>
   `).join("");
 }
 
 /* FILTER */
-function filterCategory(cat){
-  current=cat;
-  render();
-}
+document.querySelectorAll(".filters button").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter=btn.dataset.filter;
+    render();
+  }
+});
 
 /* SEARCH */
-document.getElementById("search").addEventListener("input",(e)=>{
-  searchTerm=e.target.value.toLowerCase();
-  render();
-});
+search.addEventListener("input",render);
 
 /* POPUP */
 function openPopup(id){
