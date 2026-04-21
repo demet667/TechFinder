@@ -3,39 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>TechFinder</title>
-
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header class="hero">
+<header class="topbar">
   <div class="logo">⚡ TechFinder</div>
-  <p>Compare les meilleurs produits tech</p>
-
-  <input id="search" placeholder="🔍 Rechercher un produit...">
+  <input type="text" id="searchInput" placeholder="Rechercher un produit...">
 </header>
 
-<nav class="filters">
-  <button onclick="filterCategory('all')">Tout</button>
-  <button onclick="filterCategory('smartphone')">Smartphones</button>
-  <button onclick="filterCategory('laptop')">PC Portable</button>
-  <button onclick="filterCategory('gaming')">Gaming</button>
-  <button onclick="filterCategory('tv')">TV</button>
-  <button onclick="filterCategory('audio')">Audio</button>
-  <button onclick="filterCategory('camera')">Caméra</button>
-  <button onclick="filterCategory('accessoire')">Accessoires</button>
-</nav>
+<div class="filters">
+  <button data-filter="all">Tous</button>
+  <button data-filter="smartphone">Smartphones</button>
+  <button data-filter="laptop">PC Portable</button>
+  <button data-filter="gaming">Gaming</button>
+  <button data-filter="tv">TV</button>
+  <button data-filter="audio">Audio</button>
+</div>
 
-<div class="ad">PUBLICITÉ</div>
-
-<main id="products" class="grid"></main>
+<div id="products" class="grid"></div>
 
 <!-- POPUP -->
 <div id="popup" class="popup hidden">
-  <div class="popup-box">
+  <div class="popup-content">
     <span class="close" onclick="closePopup()">✖</span>
     <img id="popupImg">
     <h2 id="popupTitle"></h2>
