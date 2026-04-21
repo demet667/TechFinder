@@ -3,184 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TechPeak — Le guide ultime de la tech</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+<title>TechFinder</title>
+
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav id="mainNav">
-  <div class="nav-inner">
-    <div class="logo">
-      <span class="logo-icon">◈</span>
-      <span class="logo-text">TECH<strong>PEAK</strong></span>
-    </div>
-    <ul class="nav-links" id="navLinks"></ul>
-    <div class="nav-right">
-      <div class="nav-search">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" id="globalSearch" placeholder="Rechercher un produit...">
-      </div>
-    </div>
-  </div>
-</nav>
-
-<!-- HERO -->
 <header class="hero">
-  <div class="hero-bg-grid"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow"><span class="live-dot"></span>Catalogue mis à jour — 2025</div>
-    <h1>Le <em>guide ultime</em><br>de la tech moderne</h1>
-    <p>PC, TV, caméras, audio, smartphones — chaque produit analysé et classé pour que tu fasses le meilleur choix.</p>
-    <div class="hero-stats">
-      <div class="hstat"><span class="hstat-n" data-target="0" id="statProducts">0</span><span class="hstat-l">Produits</span></div>
-      <div class="hstat-sep"></div>
-      <div class="hstat"><span class="hstat-n" id="statCats">0</span><span class="hstat-l">Catégories</span></div>
-      <div class="hstat-sep"></div>
-      <div class="hstat"><span class="hstat-n">4 800</span><span class="hstat-l">Tests réalisés</span></div>
-    </div>
-  </div>
+  <div class="logo">⚡ TechFinder</div>
+  <p>Compare les meilleurs produits tech</p>
+
+  <input id="search" placeholder="🔍 Rechercher un produit...">
 </header>
 
-<!-- AD TOP -->
-<div class="ad-banner">
-  <div class="ad-inner">
-    <span class="ad-label">Sponsorisé</span>
-    <div class="ad-content"><strong>🎯 Espace publicitaire disponible</strong> — Votre marque ici · <a href="#">Contactez-nous</a></div>
+<nav class="filters">
+  <button onclick="filterCategory('all')">Tout</button>
+  <button onclick="filterCategory('smartphone')">Smartphones</button>
+  <button onclick="filterCategory('laptop')">PC Portable</button>
+  <button onclick="filterCategory('gaming')">Gaming</button>
+  <button onclick="filterCategory('tv')">TV</button>
+  <button onclick="filterCategory('audio')">Audio</button>
+  <button onclick="filterCategory('camera')">Caméra</button>
+  <button onclick="filterCategory('accessoire')">Accessoires</button>
+</nav>
+
+<div class="ad">PUBLICITÉ</div>
+
+<main id="products" class="grid"></main>
+
+<!-- POPUP -->
+<div id="popup" class="popup hidden">
+  <div class="popup-box">
+    <span class="close" onclick="closePopup()">✖</span>
+    <img id="popupImg">
+    <h2 id="popupTitle"></h2>
+    <p id="popupDesc"></p>
+    <a id="popupLink" target="_blank" class="buy-btn">Voir le produit</a>
   </div>
 </div>
-
-<!-- FILTERS -->
-<div class="filter-section" id="filterSection">
-  <div class="filter-inner">
-    <div class="filter-group">
-      <span class="filter-group-label">CATÉGORIE</span>
-      <div class="filter-chips" id="categoryFilters"></div>
-    </div>
-    <div class="filter-group">
-      <span class="filter-group-label">BUDGET</span>
-      <div class="filter-chips">
-        <button class="chip chip--active" data-price="all">Tous</button>
-        <button class="chip" data-price="0-200">< 200€</button>
-        <button class="chip" data-price="200-600">200–600€</button>
-        <button class="chip" data-price="600-1200">600–1 200€</button>
-        <button class="chip" data-price="1200-99999">1 200€+</button>
-      </div>
-    </div>
-    <div class="filter-group">
-      <span class="filter-group-label">USAGE</span>
-      <div class="filter-chips">
-        <button class="chip chip--active" data-usage="all">Tous</button>
-        <button class="chip" data-usage="esport">E-Sport</button>
-        <button class="chip" data-usage="content">Créateurs</button>
-        <button class="chip" data-usage="casual">Grand public</button>
-        <button class="chip" data-usage="pro">Professionnel</button>
-        <button class="chip" data-usage="family">Famille</button>
-      </div>
-    </div>
-    <div class="filter-group filter-group--right">
-      <span class="filter-group-label">TRIER PAR</span>
-      <select class="sort-select" id="sortSelect">
-        <option value="rating">Meilleure note</option>
-        <option value="price-asc">Prix croissant</option>
-        <option value="price-desc">Prix décroissant</option>
-        <option value="newest">Plus récent</option>
-        <option value="popular">Plus populaire</option>
-      </select>
-    </div>
-  </div>
-  <div class="filter-results-bar">
-    <span id="resultsCount">0 produits</span>
-    <button class="reset-btn" id="resetFilters">Réinitialiser ✕</button>
-  </div>
-</div>
-
-<!-- MAIN -->
-<main class="main-layout">
-  <aside class="sidebar">
-    <div class="sidebar-widget">
-      <div class="sw-title">Top picks</div>
-      <div id="topPicks"></div>
-    </div>
-    <div class="sidebar-widget ad-widget">
-      <span class="ad-label">Sponsorisé</span>
-      <div class="ad-sidebar-content">
-        <div style="font-size:2.5rem">📢</div>
-        <p>Espace pub<br><strong>300×250 px</strong></p>
-        <a href="#" class="ad-contact-btn">Réserver</a>
-      </div>
-    </div>
-    <div class="sidebar-widget">
-      <div class="sw-title">Comparateur</div>
-      <p class="sw-desc">Ajoute jusqu'à 3 produits.</p>
-      <div id="compareList"></div>
-      <button class="compare-btn" id="openCompare" style="display:none">Comparer ▸</button>
-    </div>
-  </aside>
-  <section class="products-section">
-    <div class="products-grid" id="productsGrid"></div>
-    <div class="ad-inline">
-      <span class="ad-label">Sponsorisé</span>
-      <div style="flex:1;text-align:center;font-size:0.85rem;color:var(--text3)">728×90 — Espace publicitaire · <a href="#" style="color:var(--accent-l)">Contactez-nous</a></div>
-    </div>
-    <div class="products-grid" id="productsGrid2"></div>
-  </section>
-</main>
-
-<!-- PRODUCT MODAL -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="productModal">
-    <button class="modal-close" id="modalClose">✕</button>
-    <div id="modalContent"></div>
-  </div>
-</div>
-
-<!-- COMPARE MODAL -->
-<div class="modal-overlay" id="compareOverlay">
-  <div class="modal modal--wide" id="compareModal">
-    <button class="modal-close" id="compareClose">✕</button>
-    <div id="compareContent" style="padding:2rem"></div>
-  </div>
-</div>
-
-<!-- DEV PANEL MODAL -->
-<div class="modal-overlay" id="devOverlay">
-  <div class="modal modal--dev" id="devModal">
-    <button class="modal-close" id="devClose">✕</button>
-    <div id="devContent"></div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="logo"><span class="logo-icon">◈</span><span class="logo-text">TECH<strong>PEAK</strong></span></div>
-      <p>Le guide de référence pour tous vos achats tech. Indépendant, objectif, exhaustif.</p>
-      <p class="footer-affiliate">⚠️ Certains liens sont des liens affiliés Amazon. Cela ne modifie pas notre évaluation.</p>
-    </div>
-    <div class="footer-links">
-      <div class="fl-col">
-        <strong>Catégories</strong>
-        <a href="#">PC Gaming</a><a href="#">Télévisions</a><a href="#">Caméras</a>
-        <a href="#">Périphériques</a><a href="#">Audio</a><a href="#">Smartphones</a>
-      </div>
-      <div class="fl-col">
-        <strong>À propos</strong>
-        <a href="#">Méthode de test</a><a href="#">Partenariats pub</a>
-        <a href="#">Contact</a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    © 2025 TechPeak · Tous droits réservés ·
-    <a href="#">Politique de confidentialité</a> ·
-    <button class="dev-trigger" id="devTrigger">Espace développeur</button>
-  </div>
-</footer>
 
 <script src="data.js"></script>
 <script src="app.js"></script>
+
 </body>
 </html>
