@@ -1,10 +1,10 @@
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// TECHPEAK â€” app.js
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════
+// TECHPEAK — app.js
+// ═══════════════════════════════════════════════════════════
 
 const DEV_PASSWORD = "A65431Ggyigrreyfreib97.90Ohdbzbeiz1//";
 
-// â•â• STORAGE â•â•
+// ══ STORAGE ══
 function saveData() {
   try {
     localStorage.setItem('tp_products', JSON.stringify(state.products));
@@ -31,7 +31,7 @@ function loadData() {
   }
 }
 
-// â•â• APP STATE â•â•
+// ══ APP STATE ══
 const state = {
   products: [],
   categories: [],
@@ -46,7 +46,7 @@ const state = {
   devEditId: null
 };
 
-// â•â• INIT â•â•
+// ══ INIT ══
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
   buildNav();
@@ -60,14 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
   attachDevListeners();
 });
 
-// â•â• UTILS â•â•
+// ══ UTILS ══
 function getCatLabel(catId) {
   const c = state.categories.find(x => x.id === catId);
   return c ? c.label : catId;
 }
 function getCatIcon(catId) {
   const c = state.categories.find(x => x.id === catId);
-  return c ? c.icon : 'ðŸ“¦';
+  return c ? c.icon : '📦';
 }
 function getNextId() {
   return state.products.length ? Math.max(...state.products.map(p => p.id)) + 1 : 1;
@@ -75,16 +75,16 @@ function getNextId() {
 function renderStars(rating, max = 5) {
   let h = '';
   for (let i = 1; i <= max; i++) {
-    h += `<span class="star-icon${i <= rating ? ' on' : ''}">â˜…</span>`;
+    h += `<span class="star-icon${i <= rating ? ' on' : ''}">★</span>`;
   }
   return h;
 }
 
-// â•â• NAV DYNAMIC â•â•
+// ══ NAV DYNAMIC ══
 function buildNav() {
   const ul = document.getElementById('navLinks');
   if (!ul) return;
-  const cats = [{ id: 'all', label: 'Tout', icon: 'â—ˆ' }, ...state.categories].slice(0, 8);
+  const cats = [{ id: 'all', label: 'Tout', icon: '◈' }, ...state.categories].slice(0, 8);
   ul.innerHTML = cats.map(c => `
     <li><a href="#" class="nav-link${c.id === 'all' ? ' active' : ''}" data-nav="${c.id}">
       ${c.id === 'all' ? '' : c.icon + ' '}${c.label}
@@ -103,7 +103,7 @@ function buildNav() {
   });
 }
 
-// â•â• CATEGORY FILTERS â•â•
+// ══ CATEGORY FILTERS ══
 function buildCategoryFilters() {
   const container = document.getElementById('categoryFilters');
   if (!container) return;
@@ -119,7 +119,7 @@ function buildCategoryFilters() {
   });
 }
 
-// â•â• FILTERING â•â•
+// ══ FILTERING ══
 function getFiltered() {
   let list = [...state.products];
   if (state.activeCategory !== 'all') list = list.filter(p => p.cat === state.activeCategory);
@@ -147,7 +147,7 @@ function getFiltered() {
   return list;
 }
 
-// â•â• RENDER CARD â•â•
+// ══ RENDER CARD ══
 function renderCard(p) {
   const inCompare = state.compareList.includes(p.id);
   const badge = p.badge ? `<div class="card-badge badge-${p.badge}">${p.badgeLabel}</div>` : '';
@@ -161,7 +161,7 @@ function renderCard(p) {
     <div class="card-img" style="background:${p.color||'#1e1e30'}">
       ${imgContent}
       ${badge}
-      <button class="card-compare-btn ${inCompare?'added':''}" data-id="${p.id}">${inCompare?'âœ“':'+'} Comparer</button>
+      <button class="card-compare-btn ${inCompare?'added':''}" data-id="${p.id}">${inCompare?'✓':'+'} Comparer</button>
     </div>
     <div class="card-body">
       <div class="card-cat">${getCatIcon(p.cat)} ${getCatLabel(p.cat)}</div>
@@ -171,19 +171,19 @@ function renderCard(p) {
       <div class="card-desc">${p.description || ''}</div>
       <div class="card-footer-row">
         <div>
-          <div class="card-price">${p.priceDisplay || (p.price ? p.price+'â‚¬' : 'â€”')}</div>
+          <div class="card-price">${p.priceDisplay || (p.price ? p.price+'€' : '—')}</div>
           <div class="card-price-note">Prix indicatif</div>
         </div>
         <div class="card-cta-row">
           <button class="btn-detail" data-id="${p.id}">Voir +</button>
-          <a class="btn-amazon" href="${p.amazonUrl||'#'}" target="_blank" rel="noopener noreferrer">ðŸ›’ Amazon</a>
+          <a class="btn-amazon" href="${p.amazonUrl||'#'}" target="_blank" rel="noopener noreferrer">🛒 Amazon</a>
         </div>
       </div>
     </div>
   </div>`;
 }
 
-// â•â• RENDER GRID â•â•
+// ══ RENDER GRID ══
 function renderGrid() {
   const list = getFiltered();
   const half = Math.ceil(list.length / 2);
@@ -191,7 +191,7 @@ function renderGrid() {
   const g2 = document.getElementById('productsGrid2');
 
   if (list.length === 0) {
-    g1.innerHTML = `<div class="no-results"><div class="no-icon">ðŸ”</div><h3>Aucun produit trouvÃ©</h3><p>Essayez d'autres filtres ou une autre recherche.</p></div>`;
+    g1.innerHTML = `<div class="no-results"><div class="no-icon">🔍</div><h3>Aucun produit trouvé</h3><p>Essayez d'autres filtres ou une autre recherche.</p></div>`;
     g2.innerHTML = '';
   } else {
     g1.innerHTML = list.slice(0, half).map(renderCard).join('');
@@ -214,7 +214,7 @@ function attachCardListeners() {
   });
 }
 
-// â•â• PRODUCT MODAL â•â•
+// ══ PRODUCT MODAL ══
 function openProductModal(id) {
   const p = state.products.find(x => x.id === id);
   if (!p) return;
@@ -225,8 +225,8 @@ function openProductModal(id) {
 
   const tags = (p.tags||[]).map(t => `<span class="pmodal-tag">${t}</span>`).join('');
   const specs = (p.specs||[]).map(s => `<div class="spec-row-m"><span class="spec-label">${s.label}</span><span class="spec-value">${s.value}</span></div>`).join('');
-  const pros = (p.pros||[]).map(x => `<div class="pro-item">${x}</div>`).join('') || '<div style="color:var(--text4);font-size:0.8rem">Non renseignÃ©</div>';
-  const cons = (p.cons||[]).map(x => `<div class="con-item">${x}</div>`).join('') || '<div style="color:var(--text4);font-size:0.8rem">Non renseignÃ©</div>';
+  const pros = (p.pros||[]).map(x => `<div class="pro-item">${x}</div>`).join('') || '<div style="color:var(--text4);font-size:0.8rem">Non renseigné</div>';
+  const cons = (p.cons||[]).map(x => `<div class="con-item">${x}</div>`).join('') || '<div style="color:var(--text4);font-size:0.8rem">Non renseigné</div>';
 
   const comments = state.comments[id] || [];
   const commentsHtml = comments.length
@@ -237,11 +237,11 @@ function openProductModal(id) {
         <div class="comment-text">${escHtml(c.text)}</div>
         <button class="comment-delete" onclick="deleteComment(${id},${ci})">Supprimer</button>
       </div>`).join('')
-    : '<div class="no-comments">Soyez le premier Ã  commenter ce produit !</div>';
+    : '<div class="no-comments">Soyez le premier à commenter ce produit !</div>';
 
   const amazonHtml = (p.amazonUrl && p.amazonUrl !== '#')
-    ? `<a class="pmodal-amazon-btn" href="${p.amazonUrl}" target="_blank" rel="noopener noreferrer">ðŸ›’ Voir sur Amazon â€” ${p.priceDisplay||p.price+'â‚¬'}</a>`
-    : `<button class="pmodal-amazon-btn disabled" disabled>ðŸ›’ Lien Amazon non disponible</button>`;
+    ? `<a class="pmodal-amazon-btn" href="${p.amazonUrl}" target="_blank" rel="noopener noreferrer">🛒 Voir sur Amazon — ${p.priceDisplay||p.price+'€'}</a>`
+    : `<button class="pmodal-amazon-btn disabled" disabled>🛒 Lien Amazon non disponible</button>`;
 
   document.getElementById('modalContent').innerHTML = `
     <div class="pmodal-wrap">
@@ -250,7 +250,7 @@ function openProductModal(id) {
         <div class="pmodal-info">
           <div class="pmodal-cat">${getCatIcon(p.cat)} ${getCatLabel(p.cat)}</div>
           <div class="pmodal-name">${p.brand||p.name}</div>
-          <div class="pmodal-price">${p.priceDisplay||(p.price?p.price+'â‚¬':'Prix non renseignÃ©')}</div>
+          <div class="pmodal-price">${p.priceDisplay||(p.price?p.price+'€':'Prix non renseigné')}</div>
           <div class="pmodal-stars">${renderStars(p.rating||0)}</div>
           <div class="pmodal-tags">${tags}</div>
         </div>
@@ -268,16 +268,16 @@ function openProductModal(id) {
           <div class="pmodal-section">
             <div class="pmodal-section-title">Points forts & faibles</div>
             <div class="pros-cons">
-              <div class="pc-col"><strong>âœ“ Pour</strong>${pros}</div>
-              <div class="pc-col"><strong>âœ• Contre</strong>${cons}</div>
+              <div class="pc-col"><strong>✓ Pour</strong>${pros}</div>
+              <div class="pc-col"><strong>✕ Contre</strong>${cons}</div>
             </div>
           </div>
-          ${p.verdict ? `<div class="pmodal-section"><div class="pmodal-section-title">Verdict</div><div class="pmodal-verdict"><strong>â­ Note : ${p.rating||0}/5</strong><p>${p.verdict}</p></div></div>` : ''}
+          ${p.verdict ? `<div class="pmodal-section"><div class="pmodal-section-title">Verdict</div><div class="pmodal-verdict"><strong>⭐ Note : ${p.rating||0}/5</strong><p>${p.verdict}</p></div></div>` : ''}
         </div>
       </div>
 
       ${amazonHtml}
-      <div class="affiliate-note">* Lien affiliÃ© Amazon. Prix susceptible de varier.</div>
+      <div class="affiliate-note">* Lien affilié Amazon. Prix susceptible de varier.</div>
 
       <div class="comments-section">
         <div class="comments-title">Commentaires (${comments.length})</div>
@@ -298,7 +298,7 @@ function escHtml(str) {
   return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// â•â• COMMENTS â•â•
+// ══ COMMENTS ══
 function addComment(pid) {
   const nameEl = document.getElementById('commentName_'+pid);
   const textEl = document.getElementById('commentText_'+pid);
@@ -344,12 +344,12 @@ function deleteComment(pid, ci) {
   }
 }
 
-// â•â• COMPARE â•â•
+// ══ COMPARE ══
 function toggleCompare(id) {
   const idx = state.compareList.indexOf(id);
   if (idx > -1) state.compareList.splice(idx, 1);
   else {
-    if (state.compareList.length >= 3) { alert('Maximum 3 produits Ã  comparer.'); return; }
+    if (state.compareList.length >= 3) { alert('Maximum 3 produits à comparer.'); return; }
     state.compareList.push(id);
   }
   updateCompareWidget();
@@ -362,7 +362,7 @@ function updateCompareWidget() {
   list.innerHTML = state.compareList.map(id => {
     const p = state.products.find(x => x.id === id);
     if (!p) return '';
-    return `<div class="compare-item">${getCatIcon(p.cat)} ${p.brand||p.name}<button data-id="${id}">âœ•</button></div>`;
+    return `<div class="compare-item">${getCatIcon(p.cat)} ${p.brand||p.name}<button data-id="${id}">✕</button></div>`;
   }).join('');
   list.querySelectorAll('button').forEach(b => b.addEventListener('click', () => toggleCompare(parseInt(b.dataset.id))));
   btn.style.display = state.compareList.length >= 2 ? 'block' : 'none';
@@ -374,13 +374,13 @@ function openCompareModal() {
   const rows = [
     ['Image', items.map(p => p.image ? `<img src="${p.image}" style="width:60px;height:45px;object-fit:cover;border-radius:6px">` : getCatIcon(p.cat)).join('</td><td>')],
     ['Nom', items.map(p => `<strong>${p.brand||p.name}</strong>`).join('</td><td>')],
-    ['Prix', items.map(p => `<span style="color:var(--green-l);font-weight:700">${p.priceDisplay||p.price+'â‚¬'}</span>`).join('</td><td>')],
+    ['Prix', items.map(p => `<span style="color:var(--green-l);font-weight:700">${p.priceDisplay||p.price+'€'}</span>`).join('</td><td>')],
     ['Note', items.map(p => renderStars(p.rating||0)).join('</td><td>')],
-    ['CatÃ©gorie', items.map(p => getCatLabel(p.cat)).join('</td><td>')],
-    ['AnnÃ©e', items.map(p => p.year||'â€”').join('</td><td>')],
+    ['Catégorie', items.map(p => getCatLabel(p.cat)).join('</td><td>')],
+    ['Année', items.map(p => p.year||'—').join('</td><td>')],
     ...( items[0]?.specs||[] ).slice(0,5).map((s,i) => [
       s.label,
-      items.map(p => (p.specs||[])[i]?.value||'â€”').join('</td><td>')
+      items.map(p => (p.specs||[])[i]?.value||'—').join('</td><td>')
     ])
   ];
 
@@ -389,7 +389,7 @@ function openCompareModal() {
     <div style="overflow-x:auto">
     <table class="compare-table">
       <thead><tr>
-        <th>CaractÃ©ristique</th>
+        <th>Caractéristique</th>
         ${items.map(p => `<th>${p.brand||p.name}</th>`).join('')}
       </tr></thead>
       <tbody>
@@ -400,7 +400,7 @@ function openCompareModal() {
   document.body.style.overflow = 'hidden';
 }
 
-// â•â• TOP PICKS â•â•
+// ══ TOP PICKS ══
 function renderTopPicks() {
   const top = [...state.products].sort((a,b) => (b.rating||0)-(a.rating||0)).slice(0,5);
   const ranks = ['gold','silver','bronze','',''];
@@ -415,12 +415,12 @@ function renderTopPicks() {
       <div class="tpi-icon">${imgContent}</div>
       <div>
         <div class="tpi-name">${p.brand||p.name}</div>
-        <div class="tpi-price">${p.priceDisplay||p.price+'â‚¬'}</div>
+        <div class="tpi-price">${p.priceDisplay||p.price+'€'}</div>
       </div></div>`;
   }).join('');
 }
 
-// â•â• STATS â•â•
+// ══ STATS ══
 function updateStats() {
   const el1 = document.getElementById('statProducts');
   const el2 = document.getElementById('statCats');
@@ -444,7 +444,7 @@ function animateHeroNumbers() {
   });
 }
 
-// â•â• FILTER LISTENERS â•â•
+// ══ FILTER LISTENERS ══
 function attachFilterListeners() {
   document.querySelectorAll('[data-price]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -477,7 +477,7 @@ function attachFilterListeners() {
   });
 }
 
-// â•â• MODAL LISTENERS â•â•
+// ══ MODAL LISTENERS ══
 function attachModalListeners() {
   const close = (id) => {
     document.getElementById(id)?.classList.remove('open');
@@ -493,7 +493,7 @@ function attachModalListeners() {
   document.addEventListener('keydown', e => { if(e.key==='Escape') { close('modalOverlay'); close('compareOverlay'); closeDevPanel(); } });
 }
 
-// â•â• DEV PANEL â•â•
+// ══ DEV PANEL ══
 function attachDevListeners() {
   document.getElementById('devTrigger')?.addEventListener('click', openDevPanel);
 }
@@ -514,13 +514,13 @@ function renderDevContent() {
   if (!state.devUnlocked) {
     document.getElementById('devContent').innerHTML = `
       <div class="dev-lock">
-        <div class="dev-lock-icon">ðŸ”</div>
-        <h2>Espace DÃ©veloppeur</h2>
-        <p>Saisissez le mot de passe pour accÃ©der aux outils de gestion du site.</p>
+        <div class="dev-lock-icon">🔐</div>
+        <h2>Espace Développeur</h2>
+        <p>Saisissez le mot de passe pour accéder aux outils de gestion du site.</p>
         <input type="password" class="dev-lock-input" id="devPasswordInput" placeholder="Mot de passe..." autocomplete="off">
         <div style="height:8px"></div>
-        <button class="dev-lock-btn" id="devLockBtn">DÃ©verrouiller</button>
-        <div class="dev-lock-err" id="devLockErr">âŒ Mot de passe incorrect</div>
+        <button class="dev-lock-btn" id="devLockBtn">Déverrouiller</button>
+        <div class="dev-lock-err" id="devLockErr">❌ Mot de passe incorrect</div>
       </div>`;
     document.getElementById('devLockBtn')?.addEventListener('click', checkDevPassword);
     document.getElementById('devPasswordInput')?.addEventListener('keydown', e => { if(e.key==='Enter') checkDevPassword(); });
@@ -544,13 +544,13 @@ function checkDevPassword() {
 function renderDevPanel() {
   document.getElementById('devContent').innerHTML = `
     <div class="dev-panel">
-      <h2>Espace DÃ©veloppeur <span class="dev-badge">DÃ‰VERROUILLÃ‰</span></h2>
-      <p>GÃ©rez les produits, catÃ©gories et contenu du site. Les modifications sont sauvegardÃ©es automatiquement.</p>
+      <h2>Espace Développeur <span class="dev-badge">DÉVERROUILLÉ</span></h2>
+      <p>Gérez les produits, catégories et contenu du site. Les modifications sont sauvegardées automatiquement.</p>
       <div class="dev-tabs">
-        <button class="dev-tab active" data-tab="edit">âœï¸ Modifier un produit</button>
-        <button class="dev-tab" data-tab="add">âž• Ajouter un produit</button>
-        <button class="dev-tab" data-tab="manage">ðŸ“¦ GÃ©rer les produits</button>
-        <button class="dev-tab" data-tab="cats">ðŸ·ï¸ CatÃ©gories</button>
+        <button class="dev-tab active" data-tab="edit">✏️ Modifier un produit</button>
+        <button class="dev-tab" data-tab="add">➕ Ajouter un produit</button>
+        <button class="dev-tab" data-tab="manage">📦 Gérer les produits</button>
+        <button class="dev-tab" data-tab="cats">🏷️ Catégories</button>
       </div>
       <div id="devTabEdit" class="dev-tab-content active">${renderDevEdit()}</div>
       <div id="devTabAdd" class="dev-tab-content">${renderDevAdd()}</div>
@@ -572,7 +572,7 @@ function renderDevPanel() {
   attachDevFormListeners();
 }
 
-// â”€â”€ DEV: EDIT TAB â”€â”€
+// ── DEV: EDIT TAB ──
 function renderDevEdit(preloadId = null) {
   const p = preloadId ? state.products.find(x => x.id === preloadId) : null;
   const catOptions = state.categories.map(c => `<option value="${c.id}" ${p && p.cat===c.id?'selected':''}>${c.icon} ${c.label}</option>`).join('');
@@ -581,18 +581,18 @@ function renderDevEdit(preloadId = null) {
   return `
     <div class="dev-form" id="devEditForm">
       <div class="dev-field">
-        <label>NumÃ©ro du produit (ID)</label>
+        <label>Numéro du produit (ID)</label>
         <input class="dev-input" id="editId" type="number" placeholder="Ex: 1, 5, 23..." value="${p?p.id:''}" min="1">
         <button class="dev-btn" onclick="loadProductForEdit()" style="margin-top:6px">Charger le produit</button>
       </div>
       <div id="devEditFields" style="${p?'':'display:none'}">
         <div class="dev-row">
           <div class="dev-field"><label>Nom / Marque</label><input class="dev-input" id="editBrand" value="${p?escHtml(p.brand||p.name):''}"></div>
-          <div class="dev-field"><label>CatÃ©gorie</label><select class="dev-select" id="editCat">${catOptions}</select></div>
+          <div class="dev-field"><label>Catégorie</label><select class="dev-select" id="editCat">${catOptions}</select></div>
         </div>
         <div class="dev-row">
           <div class="dev-field"><label>Prix (ex: 299)</label><input class="dev-input" id="editPrice" type="number" value="${p?p.price:''}"></div>
-          <div class="dev-field"><label>Prix affichÃ© (ex: 299 â‚¬)</label><input class="dev-input" id="editPriceDisplay" value="${p?escHtml(p.priceDisplay||''):''}"></div>
+          <div class="dev-field"><label>Prix affiché (ex: 299 €)</label><input class="dev-input" id="editPriceDisplay" value="${p?escHtml(p.priceDisplay||''):''}"></div>
         </div>
         <div class="dev-field"><label>Sous-titre</label><input class="dev-input" id="editSubtitle" value="${p?escHtml(p.subtitle||''):''}"></div>
         <div class="dev-field"><label>Description</label><textarea class="dev-textarea" id="editDesc">${p?escHtml(p.description||''):''}</textarea></div>
@@ -604,13 +604,13 @@ function renderDevEdit(preloadId = null) {
           ${p&&p.image?`<img src="${p.image}" class="img-preview" id="editImgPreview">`:``}
         </div>
         <div class="dev-field">
-          <label>Note (clique sur les Ã©toiles)</label>
+          <label>Note (clique sur les étoiles)</label>
           <div class="dev-stars-pick" id="editStarsPick">
-            ${[1,2,3,4,5].map(i=>`<span class="dev-star ${p&&p.rating>=i?'on':''}" data-val="${i}">â˜…</span>`).join('')}
+            ${[1,2,3,4,5].map(i=>`<span class="dev-star ${p&&p.rating>=i?'on':''}" data-val="${i}">★</span>`).join('')}
           </div>
           <input type="hidden" id="editRating" value="${p?p.rating||0:0}">
         </div>
-        <button class="dev-btn" onclick="saveProductEdit()">ðŸ’¾ Sauvegarder les modifications</button>
+        <button class="dev-btn" onclick="saveProductEdit()">💾 Sauvegarder les modifications</button>
         <div class="dev-msg" id="editMsg"></div>
       </div>
     </div>`;
@@ -619,7 +619,7 @@ function renderDevEdit(preloadId = null) {
 function loadProductForEdit() {
   const idVal = parseInt(document.getElementById('editId')?.value || 0);
   const p = state.products.find(x => x.id === idVal);
-  if (!p) { showDevMsg('editMsg', 'Produit introuvable. VÃ©rifiez le numÃ©ro.', 'error'); return; }
+  if (!p) { showDevMsg('editMsg', 'Produit introuvable. Vérifiez le numéro.', 'error'); return; }
   const fields = document.getElementById('devEditFields');
   if (fields) {
     fields.style.display = 'block';
@@ -673,10 +673,10 @@ function saveProductEdit() {
   saveData();
   renderGrid();
   renderTopPicks();
-  showDevMsg('editMsg','âœ… Produit modifiÃ© avec succÃ¨s !','success');
+  showDevMsg('editMsg','✅ Produit modifié avec succès !','success');
 }
 
-// â”€â”€ DEV: ADD TAB â”€â”€
+// ── DEV: ADD TAB ──
 function renderDevAdd() {
   const catOptions = state.categories.map(c => `<option value="${c.id}">${c.icon} ${c.label}</option>`).join('');
   const usageOpts = ['esport','content','casual','pro','family'];
@@ -684,15 +684,15 @@ function renderDevAdd() {
     <div class="dev-form">
       <div class="dev-row">
         <div class="dev-field"><label>Nom / Marque *</label><input class="dev-input" id="addBrand" placeholder="Ex: Sony A7 IV"></div>
-        <div class="dev-field"><label>CatÃ©gorie *</label><select class="dev-select" id="addCat">${catOptions}</select></div>
+        <div class="dev-field"><label>Catégorie *</label><select class="dev-select" id="addCat">${catOptions}</select></div>
       </div>
       <div class="dev-row">
-        <div class="dev-field"><label>Prix (â‚¬) *</label><input class="dev-input" id="addPrice" type="number" placeholder="499"></div>
-        <div class="dev-field"><label>Prix affichÃ©</label><input class="dev-input" id="addPriceDisplay" placeholder="499 â‚¬"></div>
+        <div class="dev-field"><label>Prix (€) *</label><input class="dev-input" id="addPrice" type="number" placeholder="499"></div>
+        <div class="dev-field"><label>Prix affiché</label><input class="dev-input" id="addPriceDisplay" placeholder="499 €"></div>
       </div>
-      <div class="dev-field"><label>Sous-titre</label><input class="dev-input" id="addSubtitle" placeholder="Le meilleur hybride du marchÃ©"></div>
-      <div class="dev-field"><label>Description</label><textarea class="dev-textarea" id="addDesc" placeholder="Description complÃ¨te du produit..."></textarea></div>
-      <div class="dev-field"><label>Lien Amazon (affiliÃ©)</label><input class="dev-input" id="addAmazon" type="url" placeholder="https://amzn.to/..."></div>
+      <div class="dev-field"><label>Sous-titre</label><input class="dev-input" id="addSubtitle" placeholder="Le meilleur hybride du marché"></div>
+      <div class="dev-field"><label>Description</label><textarea class="dev-textarea" id="addDesc" placeholder="Description complète du produit..."></textarea></div>
+      <div class="dev-field"><label>Lien Amazon (affilié)</label><input class="dev-input" id="addAmazon" type="url" placeholder="https://amzn.to/..."></div>
       <div class="dev-field">
         <label>Image (URL ou upload PC)</label>
         <input class="dev-input" id="addImageUrl" placeholder="https://...">
@@ -700,7 +700,7 @@ function renderDevAdd() {
         <img id="addImgPreview" class="img-preview" style="display:none">
       </div>
       <div class="dev-field">
-        <label>Usage (sÃ©lection multiple)</label>
+        <label>Usage (sélection multiple)</label>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
           ${usageOpts.map(u=>`<label style="display:flex;align-items:center;gap:4px;font-size:0.8rem;color:var(--text3);cursor:pointer"><input type="checkbox" name="addUsage" value="${u}" style="accent-color:var(--accent-l)"> ${u}</label>`).join('')}
         </div>
@@ -708,20 +708,20 @@ function renderDevAdd() {
       <div class="dev-field"><label>Badge (optionnel)</label>
         <select class="dev-select" id="addBadge">
           <option value="">Aucun</option>
-          <option value="new">ðŸ†• Nouveau</option>
-          <option value="top">â­ Top</option>
-          <option value="deal">ðŸ’° Bon plan</option>
-          <option value="pro">ðŸ† Pro</option>
+          <option value="new">🆕 Nouveau</option>
+          <option value="top">⭐ Top</option>
+          <option value="deal">💰 Bon plan</option>
+          <option value="pro">🏆 Pro</option>
         </select>
       </div>
       <div class="dev-field">
-        <label>Note (clique sur les Ã©toiles)</label>
+        <label>Note (clique sur les étoiles)</label>
         <div class="dev-stars-pick" id="addStarsPick">
-          ${[1,2,3,4,5].map(i=>`<span class="dev-star" data-val="${i}">â˜…</span>`).join('')}
+          ${[1,2,3,4,5].map(i=>`<span class="dev-star" data-val="${i}">★</span>`).join('')}
         </div>
         <input type="hidden" id="addRating" value="0">
       </div>
-      <button class="dev-btn dev-btn--green" onclick="addProduct()">âž• Ajouter ce produit</button>
+      <button class="dev-btn dev-btn--green" onclick="addProduct()">➕ Ajouter ce produit</button>
       <div class="dev-msg" id="addMsg"></div>
     </div>`;
 }
@@ -730,9 +730,9 @@ function addProduct() {
   const brand = document.getElementById('addBrand')?.value.trim();
   const cat = document.getElementById('addCat')?.value;
   const price = parseFloat(document.getElementById('addPrice')?.value||0);
-  if (!brand || !cat || !price) { showDevMsg('addMsg','Nom, catÃ©gorie et prix sont obligatoires.','error'); return; }
+  if (!brand || !cat || !price) { showDevMsg('addMsg','Nom, catégorie et prix sont obligatoires.','error'); return; }
 
-  const priceDisplay = document.getElementById('addPriceDisplay')?.value.trim() || price + ' â‚¬';
+  const priceDisplay = document.getElementById('addPriceDisplay')?.value.trim() || price + ' €';
   const subtitle = document.getElementById('addSubtitle')?.value.trim() || '';
   const desc = document.getElementById('addDesc')?.value.trim() || '';
   const amazon = document.getElementById('addAmazon')?.value.trim() || '#';
@@ -765,7 +765,7 @@ function addProduct() {
   renderTopPicks();
   updateStats();
   buildNav();
-  showDevMsg('addMsg', `âœ… Produit #${newProd.id} ajoutÃ© avec succÃ¨s !`, 'success');
+  showDevMsg('addMsg', `✅ Produit #${newProd.id} ajouté avec succès !`, 'success');
   // Clear form
   ['addBrand','addPrice','addPriceDisplay','addSubtitle','addDesc','addAmazon','addImageUrl'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value='';
@@ -776,11 +776,11 @@ function addProduct() {
   const prev = document.getElementById('addImgPreview'); if(prev) prev.style.display='none';
 }
 
-// â”€â”€ DEV: MANAGE TAB â”€â”€
+// ── DEV: MANAGE TAB ──
 function renderDevManage() {
   return `
     <div>
-      <p style="font-size:0.82rem;color:var(--text4);margin-bottom:1rem">${state.products.length} produits dans la base. Cliquez sur Modifier pour Ã©diter, ou Supprimer pour retirer dÃ©finitivement.</p>
+      <p style="font-size:0.82rem;color:var(--text4);margin-bottom:1rem">${state.products.length} produits dans la base. Cliquez sur Modifier pour éditer, ou Supprimer pour retirer définitivement.</p>
       <div class="dev-product-list">
         ${state.products.map(p => {
           const img = p.image ? `<img src="${p.image}" class="dev-prod-img">` : `<span class="dev-prod-icon">${getCatIcon(p.cat)}</span>`;
@@ -788,10 +788,10 @@ function renderDevManage() {
             <span class="dev-prod-num">#${p.id}</span>
             ${img}
             <span class="dev-prod-name">${p.brand||p.name}</span>
-            <span class="dev-prod-price">${p.priceDisplay||p.price+'â‚¬'}</span>
+            <span class="dev-prod-price">${p.priceDisplay||p.price+'€'}</span>
             <div class="dev-prod-actions">
-              <button class="dev-edit-btn" onclick="quickEditProduct(${p.id})">âœï¸ Modifier</button>
-              <button class="dev-delete-btn" onclick="deleteProduct(${p.id})">ðŸ—‘ï¸ Supprimer</button>
+              <button class="dev-edit-btn" onclick="quickEditProduct(${p.id})">✏️ Modifier</button>
+              <button class="dev-delete-btn" onclick="deleteProduct(${p.id})">🗑️ Supprimer</button>
             </div>
           </div>`;
         }).join('')}
@@ -812,7 +812,7 @@ function quickEditProduct(id) {
 }
 
 function deleteProduct(id) {
-  if (!confirm(`Supprimer dÃ©finitivement le produit #${id} ?`)) return;
+  if (!confirm(`Supprimer définitivement le produit #${id} ?`)) return;
   const idx = state.products.findIndex(x => x.id === id);
   if (idx >= 0) {
     state.products.splice(idx, 1);
@@ -829,28 +829,28 @@ function deleteProduct(id) {
   }
 }
 
-// â”€â”€ DEV: CATEGORIES TAB â”€â”€
+// ── DEV: CATEGORIES TAB ──
 function renderDevCats() {
   return `
     <div class="dev-form">
-      <p style="font-size:0.82rem;color:var(--text4);margin-bottom:1rem">Ajoutez ou supprimez des catÃ©gories de produits. Les catÃ©gories avec des produits existants ne peuvent pas Ãªtre supprimÃ©es.</p>
+      <p style="font-size:0.82rem;color:var(--text4);margin-bottom:1rem">Ajoutez ou supprimez des catégories de produits. Les catégories avec des produits existants ne peuvent pas être supprimées.</p>
       <div class="dev-cat-list" id="devCatList">
         ${state.categories.map(c => {
           const hasProducts = state.products.some(p => p.cat === c.id);
           return `<div class="dev-cat-item">
             ${c.icon} ${c.label}
-            ${!hasProducts ? `<button class="dev-cat-del" onclick="deleteCategory('${c.id}')">âœ•</button>` : '<span style="font-size:0.65rem;color:var(--text4);margin-left:4px">(en usage)</span>'}
+            ${!hasProducts ? `<button class="dev-cat-del" onclick="deleteCategory('${c.id}')">✕</button>` : '<span style="font-size:0.65rem;color:var(--text4);margin-left:4px">(en usage)</span>'}
           </div>`;
         }).join('')}
       </div>
       <div style="border-top:1px solid var(--border);padding-top:1rem;margin-top:0.5rem">
-        <p style="font-size:0.8rem;color:var(--text3);margin-bottom:0.75rem;font-weight:600">Ajouter une nouvelle catÃ©gorie</p>
+        <p style="font-size:0.8rem;color:var(--text3);margin-bottom:0.75rem;font-weight:600">Ajouter une nouvelle catégorie</p>
         <div class="dev-row">
           <div class="dev-field"><label>ID (ex: accessoire)</label><input class="dev-input" id="newCatId" placeholder="mon-id-cat"></div>
-          <div class="dev-field"><label>Label affichÃ©</label><input class="dev-input" id="newCatLabel" placeholder="Accessoire"></div>
+          <div class="dev-field"><label>Label affiché</label><input class="dev-input" id="newCatLabel" placeholder="Accessoire"></div>
         </div>
-        <div class="dev-field"><label>Emoji icÃ´ne</label><input class="dev-input" id="newCatIcon" placeholder="ðŸ“¦" maxlength="4" style="width:100px"></div>
-        <button class="dev-btn dev-btn--green" onclick="addCategory()" style="margin-top:0.5rem">âž• Ajouter la catÃ©gorie</button>
+        <div class="dev-field"><label>Emoji icône</label><input class="dev-input" id="newCatIcon" placeholder="📦" maxlength="4" style="width:100px"></div>
+        <button class="dev-btn dev-btn--green" onclick="addCategory()" style="margin-top:0.5rem">➕ Ajouter la catégorie</button>
         <div class="dev-msg" id="catMsg"></div>
       </div>
     </div>`;
@@ -859,21 +859,21 @@ function renderDevCats() {
 function addCategory() {
   const id = document.getElementById('newCatId')?.value.trim().toLowerCase().replace(/\s+/g,'-');
   const label = document.getElementById('newCatLabel')?.value.trim();
-  const icon = document.getElementById('newCatIcon')?.value.trim() || 'ðŸ“¦';
+  const icon = document.getElementById('newCatIcon')?.value.trim() || '📦';
   if (!id || !label) { showDevMsg('catMsg','ID et label obligatoires.','error'); return; }
-  if (state.categories.find(c => c.id === id)) { showDevMsg('catMsg','Cette catÃ©gorie existe dÃ©jÃ .','error'); return; }
+  if (state.categories.find(c => c.id === id)) { showDevMsg('catMsg','Cette catégorie existe déjà.','error'); return; }
   state.categories.push({ id, label, icon });
   saveData();
   buildCategoryFilters();
   buildNav();
-  showDevMsg('catMsg','âœ… CatÃ©gorie ajoutÃ©e !','success');
+  showDevMsg('catMsg','✅ Catégorie ajoutée !','success');
   document.getElementById('devTabCats').innerHTML = renderDevCats();
   attachDevFormListeners();
 }
 
 function deleteCategory(id) {
-  if (state.products.some(p => p.cat === id)) { alert('Impossible : des produits utilisent cette catÃ©gorie.'); return; }
-  if (!confirm(`Supprimer la catÃ©gorie "${id}" ?`)) return;
+  if (state.products.some(p => p.cat === id)) { alert('Impossible : des produits utilisent cette catégorie.'); return; }
+  if (!confirm(`Supprimer la catégorie "${id}" ?`)) return;
   state.categories = state.categories.filter(c => c.id !== id);
   saveData();
   buildCategoryFilters();
@@ -882,7 +882,7 @@ function deleteCategory(id) {
   attachDevFormListeners();
 }
 
-// â”€â”€ DEV: SHARED FORM LISTENERS â”€â”€
+// ── DEV: SHARED FORM LISTENERS ──
 function attachDevFormListeners() {
   // Stars pickers
   document.querySelectorAll('.dev-stars-pick').forEach(picker => {
